@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אסף גרון | מורה פרטי למתמטיקה</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --gold: #c9a84c; --gold-light: #e8c97a;
+    --dark: #0f0f1a; --dark2: #1a1a2e; --dark3: #16213e;
+    --text: #e8e8f0; --text-muted: #9999bb;
+    --card-bg: rgba(255,255,255,0.04); --border: rgba(201,168,76,0.25);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Heebo',sans-serif; background:var(--dark); color:var(--text); line-height:1.7; overflow-x:hidden; }
+
+  /* NAV */
+  nav { position:fixed; top:0; width:100%; z-index:100; padding:1rem 0; background:rgba(15,15,26,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+  .nav-inner { max-width:1100px; margin:0 auto; padding:0 2rem; display:flex; justify-content:space-between; align-items:center; }
+  .nav-logo { font-size:1.15rem; font-weight:800; color:var(--gold); white-space:nowrap; }
+  .nav-links { display:flex; gap:1.5rem; list-style:none; }
+  .nav-links a { color:var(--text-muted); text-decoration:none; font-weight:500; font-size:0.9rem; transition:color 0.2s; white-space:nowrap; }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-cta { background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:#0f0f1a; padding:0.45rem 1.1rem; border-radius:6px; font-weight:700; font-size:0.85rem; text-decoration:none; white-space:nowrap; transition:opacity 0.2s; }
+  .nav-cta:hover { opacity:0.85; }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
+  .hamburger span { display:block; width:24px; height:2px; background:var(--gold); border-radius:2px; }
+  .mobile-menu { display:none; position:fixed; top:57px; right:0; left:0; background:rgba(15,15,26,0.98); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:1.5rem 2rem; z-index:99; flex-direction:column; }
+  .mobile-menu.open { display:flex; }
+  .mobile-menu a { color:var(--text-muted); text-decoration:none; font-weight:600; font-size:1rem; padding:0.75rem 0; border-bottom:1px solid var(--border); transition:color 0.2s; }
+  .mobile-menu a:last-child { border-bottom:none; color:var(--gold); }
+  .mobile-menu a:hover { color:var(--gold); }
+
+  /* HERO */
+  .hero { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:7rem 1.5rem 5rem;
+    background:radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,168,76,0.14) 0%, transparent 70%), var(--dark); position:relative; }
+  .hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  .hero-content { position:relative; max-width:720px; }
+  .hero-badge { display:inline-block; background:rgba(201,168,76,0.12); border:1px solid var(--border); color:var(--gold); padding:0.4rem 1.2rem; border-radius:50px; font-size:0.82rem; font-weight:600; letter-spacing:0.5px; margin-bottom:1.5rem; }
+  .hero-name { font-size:1rem; color:var(--text-muted); font-weight:500; margin-bottom:0.6rem; letter-spacing:2px; text-transform:uppercase; }
+  .hero h1 { font-size:clamp(2.4rem,7vw,4.2rem); font-weight:900; line-height:1.1; margin-bottom:1.2rem;
+    background:linear-gradient(135deg,#fff 40%,var(--gold-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .hero-sub { font-size:1.1rem; color:var(--text-muted); margin-bottom:2.5rem; max-width:520px; margin-left:auto; margin-right:auto; }
+  .hero-cta { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .btn-primary { background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:#0f0f1a; padding:0.9rem 2.2rem; border:none; border-radius:8px; font-size:1rem; font-weight:700; font-family:'Heebo',sans-serif; cursor:pointer; transition:transform 0.2s,box-shadow 0.2s; text-decoration:none; display:inline-block; }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,168,76,0.4); }
+  .btn-secondary { background:transparent; color:var(--text); padding:0.9rem 2.2rem; border:1px solid var(--border); border-radius:8px; font-size:1rem; font-weight:600; font-family:'Heebo',sans-serif; cursor:pointer; transition:border-color 0.2s,color 0.2s; text-decoration:none; display:inline-block; }
+  .btn-secondary:hover { border-color:var(--gold); color:var(--gold); }
+  .proof-strip { display:flex; justify-content:center; gap:2rem; margin-top:3.5rem; padding-top:3rem; border-top:1px solid var(--border); flex-wrap:wrap; }
+  .proof-item { display:flex; align-items:center; gap:0.6rem; color:var(--text-muted); font-size:0.88rem; }
+  .proof-icon { color:var(--gold); }
+
+  /* SECTIONS */
+  section { padding:5rem 1.5rem; }
+  .section-inner { max-width:1100px; margin:0 auto; }
+  .section-tag { display:inline-block; color:var(--gold); font-size:0.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:0.6rem; }
+  .section-title { font-size:clamp(1.7rem,4vw,2.4rem); font-weight:800; margin-bottom:0.9rem; line-height:1.2; }
+  .section-sub { color:var(--text-muted); font-size:1rem; max-width:520px; }
+
+  /* TESTIMONIALS */
+  #testimonials { background:var(--dark2); }
+  .testimonials-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.5rem; margin-top:2.5rem; }
+  .testimonial { background:var(--card-bg); border:1px solid var(--border); border-radius:14px; padding:1.8rem; position:relative; transition:border-color 0.25s; }
+  .testimonial:hover { border-color:var(--gold); }
+  .testimonial::before { content:'"'; position:absolute; top:0.8rem; left:1.2rem; font-size:3.5rem; line-height:1; color:var(--gold); opacity:0.25; font-family:Georgia,serif; }
+  .testimonial p { color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem; padding-top:1.2rem; line-height:1.6; }
+  .testimonial-author { display:flex; align-items:center; gap:0.75rem; }
+  .avatar { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--dark3)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.95rem; color:#0f0f1a; flex-shrink:0; }
+  .author-name { font-weight:700; font-size:0.88rem; }
+  .author-sub { color:var(--text-muted); font-size:0.78rem; }
+  .stars { color:var(--gold); font-size:0.8rem; margin-bottom:0.2rem; }
+
+  /* ABOUT */
+  #about { background:var(--dark3); }
+  .about-grid { display:grid; grid-template-columns:1.1fr 0.9fr; gap:3.5rem; align-items:start; margin-top:2.5rem; }
+  .about-text p { color:var(--text-muted); margin-bottom:1rem; font-size:0.97rem; }
+  .about-tags { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1.5rem; }
+  .tag { background:rgba(201,168,76,0.08); border:1px solid var(--border); color:var(--gold); padding:0.28rem 0.85rem; border-radius:50px; font-size:0.8rem; font-weight:600; }
+  .about-card { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:1.8rem; }
+  .about-card h3 { color:var(--gold); font-weight:700; margin-bottom:1.2rem; letter-spacing:1px; text-transform:uppercase; font-size:0.8rem; }
+  .cred-item { display:flex; align-items:flex-start; gap:0.75rem; margin-bottom:1rem; }
+  .cred-icon { color:var(--gold); font-size:1rem; margin-top:0.15rem; flex-shrink:0; }
+  .cred-text { font-size:0.9rem; color:var(--text-muted); line-height:1.5; }
+  .cred-text strong { color:var(--text); display:block; margin-bottom:0.1rem; }
+
+  /* SUBJECTS */
+  #subjects { background:var(--dark); }
+  .subjects-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:2.5rem; }
+  .subject-card { background:var(--card-bg); border:1px solid var(--border); border-radius:14px; padding:1.8rem; transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s; }
+  .subject-card:hover { transform:translateY(-5px); border-color:var(--gold); box-shadow:0 12px 40px rgba(201,168,76,0.1); }
+  .subject-icon { font-size:1.8rem; margin-bottom:0.9rem; }
+  .subject-card h3 { font-size:1.05rem; font-weight:700; margin-bottom:0.5rem; }
+  .subject-card p { color:var(--text-muted); font-size:0.88rem; line-height:1.55; }
+  .level-badge { display:inline-block; background:rgba(201,168,76,0.1); border:1px solid var(--border); color:var(--gold); padding:0.2rem 0.7rem; border-radius:50px; font-size:0.73rem; font-weight:700; margin-top:0.75rem; }
+
+  /* LOCATION */
+  #location { background:var(--dark2); }
+  .location-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2.5rem; }
+  .location-card { background:var(--card-bg); border:1px solid var(--border); border-radius:14px; padding:1.8rem; transition:border-color 0.25s; }
+  .location-card:hover { border-color:var(--gold); }
+  .location-card h3 { font-size:1.05rem; font-weight:700; margin-bottom:0.6rem; }
+  .location-card p { color:var(--text-muted); font-size:0.9rem; line-height:1.6; }
+  .photo-placeholder { background:rgba(201,168,76,0.05); border:1px dashed rgba(201,168,76,0.3); border-radius:10px; height:160px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem; margin-top:1.2rem; color:var(--text-muted); font-size:0.82rem; }
+
+  /* HOW */
+  #how { background:var(--dark3); }
+  .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:2.5rem; counter-reset:steps; }
+  .step { position:relative; padding:1.8rem 1.5rem; background:var(--card-bg); border:1px solid var(--border); border-radius:14px; counter-increment:steps; }
+  .step::before { content:counter(steps); position:absolute; top:-1rem; right:1.2rem; background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:#0f0f1a; width:2rem; height:2rem; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.88rem; }
+  .step h3 { font-size:0.97rem; font-weight:700; margin-bottom:0.5rem; }
+  .step p { color:var(--text-muted); font-size:0.87rem; line-height:1.55; }
+
+  /* PRICING */
+  #pricing { background:var(--dark); }
+  .pricing-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; margin-top:2.5rem; }
+  .pricing-card { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:2rem 1.5rem; text-align:center; transition:transform 0.25s; display:flex; flex-direction:column; }
+  .pricing-card.featured { border-color:var(--gold); background:rgba(201,168,76,0.07); position:relative; }
+  .pricing-card.featured::before { content:'הכי פופולרי ✦'; position:absolute; top:-1rem; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:#0f0f1a; padding:0.3rem 1rem; border-radius:50px; font-size:0.72rem; font-weight:700; white-space:nowrap; }
+  .pricing-card.intro { border-color:rgba(46,204,113,0.4); background:rgba(46,204,113,0.05); }
+  .pricing-card.intro .plan-price { color:#2ecc71; }
+  .pricing-card:hover { transform:translateY(-4px); }
+  .plan-name { font-size:0.9rem; font-weight:700; color:var(--text-muted); margin-bottom:0.8rem; }
+  .plan-price { font-size:2.5rem; font-weight:900; color:var(--gold); line-height:1; }
+  .plan-price span { font-size:0.9rem; color:var(--text-muted); font-weight:400; }
+  .plan-desc { font-size:0.8rem; color:var(--text-muted); margin-top:0.35rem; margin-bottom:0.5rem; min-height:2rem; line-height:1.4; }
+  .plan-features { list-style:none; margin:1rem 0 1.5rem; text-align:right; flex:1; }
+  .plan-features li { padding:0.3rem 0; font-size:0.85rem; color:var(--text-muted); display:flex; align-items:center; gap:0.5rem; justify-content:flex-end; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .plan-features li:last-child { border-bottom:none; }
+  .plan-features li::before { content:'✓'; color:var(--gold); font-weight:700; flex-shrink:0; }
+  .pricing-card.intro .plan-features li::before { color:#2ecc71; }
+  .pricing-note { text-align:center; margin-top:1.5rem; color:var(--text-muted); font-size:0.88rem; }
+  .pricing-note strong { color:var(--gold); }
+
+  /* FAQ */
+  #faq { background:var(--dark2); }
+  .faq-list { margin-top:2.5rem; display:flex; flex-direction:column; gap:0.75rem; max-width:780px; }
+  .faq-item { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .faq-q { padding:1.2rem 1.5rem; font-weight:700; font-size:0.97rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:1rem; user-select:none; transition:color 0.2s; }
+  .faq-q:hover { color:var(--gold); }
+  .faq-icon { color:var(--gold); font-size:1.1rem; flex-shrink:0; transition:transform 0.25s; }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height 0.3s ease, padding 0.3s; }
+  .faq-a p { padding:0 1.5rem 1.2rem; color:var(--text-muted); font-size:0.92rem; line-height:1.7; }
+  .faq-item.open .faq-a { max-height:300px; }
+  .faq-item.open .faq-icon { transform:rotate(45deg); }
+  .faq-item.open .faq-q { color:var(--gold); }
+
+  /* CONTACT */
+  #contact { background:var(--dark3); }
+  .contact-wrapper { display:grid; grid-template-columns:1fr 1.2fr; gap:4rem; align-items:start; margin-top:2.5rem; }
+  .contact-info p { color:var(--text-muted); margin-bottom:2rem; font-size:0.97rem; line-height:1.7; }
+  .contact-detail { display:flex; align-items:flex-start; gap:0.9rem; margin-bottom:1rem; color:var(--text-muted); font-size:0.92rem; }
+  .contact-detail strong { color:var(--text); display:block; }
+  .contact-form { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:2.2rem; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .form-group { margin-bottom:1rem; }
+  .form-group label { display:block; font-size:0.82rem; font-weight:600; color:var(--text-muted); margin-bottom:0.35rem; }
+  .form-group input, .form-group select, .form-group textarea { width:100%; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:8px; padding:0.7rem 0.9rem; color:var(--text); font-family:'Heebo',sans-serif; font-size:0.92rem; outline:none; transition:border-color 0.2s; direction:rtl; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); background:rgba(201,168,76,0.04); }
+  .form-group textarea { resize:vertical; min-height:90px; }
+  .form-group select option { background:var(--dark2); }
+
+  footer { text-align:center; padding:2rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.83rem; }
+  .whatsapp-float { position:fixed; bottom:1.5rem; left:1.5rem; background:#25d366; color:white; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; box-shadow:0 4px 20px rgba(37,211,102,0.45); text-decoration:none; z-index:99; transition:transform 0.2s; }
+  .whatsapp-float:hover { transform:scale(1.1); }
+
+  /* MOBILE */
+  @media (max-width:960px) {
+    .pricing-grid { grid-template-columns:1fr 1fr; }
+    .subjects-grid { grid-template-columns:1fr; }
+    .steps { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:768px) {
+    .nav-links, .nav-cta { display:none; }
+    .hamburger { display:flex; }
+    .hero { padding:6rem 1.2rem 3.5rem; }
+    .hero h1 { font-size:2.2rem; }
+    .proof-strip { gap:1rem; }
+    section { padding:3.5rem 1.2rem; }
+    .about-grid, .contact-wrapper, .location-grid { grid-template-columns:1fr; gap:2rem; }
+    .form-row { grid-template-columns:1fr; }
+    .pricing-grid { grid-template-columns:1fr; }
+  }
+  @media (max-width:480px) {
+    .steps { grid-template-columns:1fr; }
+    .hero-cta { flex-direction:column; align-items:center; }
+    .btn-primary, .btn-secondary { width:100%; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">✦ אסף גרון | מתמטיקה</div>
+    <ul class="nav-links">
+      <li><a href="#testimonials">המלצות</a></li>
+      <li><a href="#about">אודות</a></li>
+      <li><a href="#subjects">מה אני מלמד</a></li>
+      <li><a href="#pricing">מחירים</a></li>
+      <li><a href="#faq">שאלות</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">צור קשר</a>
+    <div class="hamburger" onclick="toggleMenu()" id="burger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#testimonials" onclick="closeMenu()">המלצות</a>
+  <a href="#about" onclick="closeMenu()">אודות</a>
+  <a href="#subjects" onclick="closeMenu()">מה אני מלמד</a>
+  <a href="#pricing" onclick="closeMenu()">מחירים</a>
+  <a href="#faq" onclick="closeMenu()">שאלות נפוצות</a>
+  <a href="#contact" onclick="closeMenu()">📞 צור קשר</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✦ מורה פרטי למתמטיקה | אזור מודיעין ואונליין</div>
+    <div class="hero-name">אסף גרון</div>
+    <h1>מתמטיקה סוף סוף מובנת</h1>
+    <p class="hero-sub">ארבע שנות ניסיון, עשרות תלמידים מרוצים — שיעורים פרטיים לכיתה ט׳ ועד 5 יחידות לימוד, באווירה נוחה ובלי שיפוטיות.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">קבע שיעור היכרות ←</a>
+      <a href="#testimonials" class="btn-secondary">ראה המלצות</a>
+    </div>
+    <div class="proof-strip">
+      <div class="proof-item"><span class="proof-icon">✦</span> ארבע שנות ניסיון</div>
+      <div class="proof-item"><span class="proof-icon">✦</span> עשרות תלמידים</div>
+      <div class="proof-item"><span class="proof-icon">✦</span> שיעור היכרות ב-₪80</div>
+      <div class="proof-item"><span class="proof-icon">✦</span> אזור מודיעין + זום</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="section-tag">מה אומרים עלי</div>
+    <h2 class="section-title">תוצאות אמיתיות, מילים אמיתיות</h2>
+    <p class="section-sub">ישירות מוואטסאפ — לא עורכתי כלום.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <p>אסף תודה רבה רבה על השיעור — מרגישה שיפור ענק בהבנה של תוך שעה, משהו שאני בשיעורים שבוע לא הצלחתי. חג שמח ושבת שלום 🙏</p>
+        <div class="testimonial-author">
+          <div class="avatar">ש</div>
+          <div><div class="stars">★★★★★</div><div class="author-name">שני</div><div class="author-sub">י"א · 4 יחידות</div></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p>אסףףף קיבלתי 100!!! 🎉</p>
+        <div class="testimonial-author">
+          <div class="avatar">ד</div>
+          <div><div class="stars">★★★★★</div><div class="author-name">דניאל</div><div class="author-sub">י"א · 4 יחידות · ציון בגרות: 100</div></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p>אסף תודה ענקית. יואב חזר עם חיוך ושיתף. תודה ענקית 🙏</p>
+        <div class="testimonial-author">
+          <div class="avatar">ע</div>
+          <div><div class="stars">★★★★★</div><div class="author-name">עדי</div><div class="author-sub">אמא של תלמיד · י"ב · 3 יחידות</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-tag">אודות</div>
+        <h2 class="section-title">מי אני?</h2>
+        <p>שמי אסף גרון, מורה פרטי למתמטיקה עם ארבע שנות ניסיון ועשרות תלמידים מכיתה ט׳ ועד בגרות 5 יחידות.</p>
+        <p>מה שמייחד אותי? אני צעיר, והייתי בדיוק בנעליים שלכם לא מזמן. אני זוכר מה קשה, מה מבלבל, ואיך מרגישים לפני בגרות. אני גם מבין את הצד האנושי — שלפעמים אין כוח, שקשה להתרכז, שמתמטיקה יכולה להרגיש רחוקה. אני לא שופט, אני לא מרצה — אני פשוט עוזר להתקדם, בצורה שעובדת.</p>
+        <p>יחד עם זאת, לוקח את החומר ברצינות מלאה. כל שיעור מתוכנן, כל תלמיד מקבל תוכנית לימוד אישית, וההורים מעודכנים תמיד.</p>
+        <div class="about-tags">
+          <span class="tag">מדבר בגובה העיניים</span>
+          <span class="tag">סבלנות אינסופית</span>
+          <span class="tag">תוכנית לכל תלמיד</span>
+          <span class="tag">עדכון להורים</span>
+          <span class="tag">רציני ואחראי</span>
+          <span class="tag">5 יח׳ מתמטיקה</span>
+        </div>
+      </div>
+      <div class="about-card">
+        <h3>✦ קצת רקע</h3>
+        <div class="cred-item">
+          <div class="cred-icon">📐</div>
+          <div class="cred-text"><strong>בגרות 5 יחידות מתמטיקה</strong>יחד עם פיזיקה, אנגלית, ביולוגיה ומוסיקה — תיכון עירוני א׳, מודיעין.</div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">🪖</div>
+          <div class="cred-text"><strong>לוחם ומפקד · יחידה 869</strong>שלוש שנים של הדרכה צמודה ועבודה יומיומית עם אנשים — ניסיון שמביא לכל שיעור.</div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">📍</div>
+          <div class="cred-text"><strong>חדר לימוד בלפיד + אונליין</strong>סביבה נוחה ופרטית, או זום — לפי מה שמתאים לכם.</div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">🗓️</div>
+          <div class="cred-text"><strong>זמינות</strong>ראשון, שלישי ושישי — ובמידת הצורך ניתן למצוא פתרון גמיש.</div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">📞</div>
+          <div class="cred-text"><strong>054-307-3674</strong>assafg4@gmail.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECTS -->
+<section id="subjects">
+  <div class="section-inner">
+    <div class="section-tag">מה אני מלמד</div>
+    <h2 class="section-title">התמחות מלאה במתמטיקה</h2>
+    <p class="section-sub">אני מתמחה אך ורק במתמטיקה — וזו בדיוק הסיבה שאני טוב בזה.</p>
+    <div class="subjects-grid">
+      <div class="subject-card">
+        <div class="subject-icon">📐</div>
+        <h3>כיתה ט׳ — א1 ו-א2</h3>
+        <p>בניית בסיס מוצק, מילוי פערים ויצירת ביטחון לקראת הבגרויות.</p>
+        <div class="level-badge">א1 · א2</div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon">📊</div>
+        <h3>4 יחידות לימוד</h3>
+        <p>כיסוי מלא של חומר הבגרות, תרגול מבחנים קודמים ובניית ביטחון לבחינה.</p>
+        <div class="level-badge">בגרות 4 יח׳</div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon">🏆</div>
+        <h3>5 יחידות לימוד</h3>
+        <p>דגש על שאלות מחשבה, הוכחות, ניתוח גרפים ופתרון בעיות מורכבות — בדיוק כמו שהבגרות דורשת.</p>
+        <div class="level-badge">בגרות 5 יח׳</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section id="location">
+  <div class="section-inner">
+    <div class="section-tag">מיקום ואופן הלימוד</div>
+    <h2 class="section-title">איפה לומדים?</h2>
+    <p class="section-sub">שתי אפשרויות, אותו תעריף — תבחרו מה נוח לכם.</p>
+    <div class="location-grid">
+      <div class="location-card">
+        <h3>📍 חדר לימוד בלפיד — פרונטלי</h3>
+        <p>חדר לימוד קטן, מזמין ונוח עם פרטיות מלאה. סביבה שמאפשרת ריכוז ולמידה אמיתית — בלי הסחות דעת.</p>
+        <div class="photo-placeholder">
+          <span style="font-size:1.4rem">🖼️</span>
+          <span>תמונות בקרוב</span>
+        </div>
+      </div>
+      <div class="location-card">
+        <h3>💻 שיעורים מקוונים — זום</h3>
+        <p>לתלמידים שמעדיפים מהבית — אותה רמה, אותו ריכוז, אותו תעריף בדיוק. ללא נסיעות.</p>
+        <div class="photo-placeholder">
+          <span style="font-size:1.4rem">🖼️</span>
+          <span>תמונות בקרוב</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-tag">התהליך</div>
+    <h2 class="section-title">איך זה עובד?</h2>
+    <p class="section-sub">פשוט ונוח — ללא התחייבות מראש.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>שיעור היכרות ב-₪80</h3>
+        <p>שיעור שלם של שעה, בלי להתחייב להמשך. מכירים, לומדים, ומרגישים אם זה מתאים.</p>
+      </div>
+      <div class="step">
+        <h3>תוכנית אישית</h3>
+        <p>אבנה תוכנית לימוד מותאמת עם יעדים ברורים ולו"ז שעובד בשבילך.</p>
+      </div>
+      <div class="step">
+        <h3>שיעורים שוטפים</h3>
+        <p>פנים אל פנים בלפיד או זום — גמיש, נוח ומסודר.</p>
+      </div>
+      <div class="step">
+        <h3>מעקב ועדכון</h3>
+        <p>תקשורת שוטפת עם ההורים על התקדמות, יעדים והמלצות לתרגול בבית.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner" style="text-align:center">
+    <div class="section-tag">מחירים</div>
+    <h2 class="section-title">שקוף, הוגן ופשוט</h2>
+    <p class="section-sub" style="margin:0 auto 2.5rem;">ללא חוזים, ללא הפתעות. פרונטלי ואונליין — אותו מחיר.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card intro">
+        <div class="plan-name">שיעור היכרות</div>
+        <div class="plan-price">₪80 <span>/ שעה</span></div>
+        <div class="plan-desc">שיעור ראשון מלא — תנסו בלי להתחייב</div>
+        <ul class="plan-features">
+          <li>שיעור שלם של שעה</li>
+          <li>ללא התחייבות להמשך</li>
+          <li>חומרים מותאמים</li>
+          <li>פרונטלי או זום</li>
+        </ul>
+        <a href="#contact" class="btn-secondary" style="width:100%;text-align:center;display:block">קבע עכשיו</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">שיעור בודד</div>
+        <div class="plan-price">₪160 <span>/ שעה</span></div>
+        <div class="plan-desc">גמישות מלאה</div>
+        <ul class="plan-features">
+          <li>שיעור שעה אחת</li>
+          <li>ללא התחייבות</li>
+          <li>חומרים מותאמים</li>
+          <li>פרונטלי או זום</li>
+        </ul>
+        <a href="#contact" class="btn-secondary" style="width:100%;text-align:center;display:block">בחר</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="plan-name">חבילה חודשית — 4 שיעורים</div>
+        <div class="plan-price">₪580 <span>/ חודש</span></div>
+        <div class="plan-desc">חיסכון של ₪60</div>
+        <ul class="plan-features">
+          <li>4 שיעורים × שעה</li>
+          <li>תוכנית לימוד אישית</li>
+          <li>עדכון שוטף להורים</li>
+          <li>זמינות מוגברת בוואטסאפ</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="width:100%;text-align:center;display:block">בחר</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">אינטנסיבי לבגרות</div>
+        <div class="plan-price">₪1,100 <span>/ חודש</span></div>
+        <div class="plan-desc">8 שיעורים לפני מועד הבגרות</div>
+        <ul class="plan-features">
+          <li>8 שיעורים × שעה</li>
+          <li>תרגולים וסימולציות</li>
+          <li>מבחנים קודמים + פתרונות</li>
+          <li>זמינות גבוהה לפני המבחן</li>
+        </ul>
+        <a href="#contact" class="btn-secondary" style="width:100%;text-align:center;display:block">בחר</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="section-tag">שאלות נפוצות</div>
+    <h2 class="section-title">יש שאלות? יש תשובות</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          מה זה שיעור היכרות ב-₪80?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><p>שיעור ראשון מלא של שעה במחיר מיוחד. לומדים ביחד, מבינים מה הפערים, ומרגישים אם הכימיה עובדת — בלי שום התחייבות להמשיך.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          כמה זמן לוקח לראות שיפור?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><p>תלוי בפערים ובתדירות השיעורים, אבל רוב התלמידים מרגישים הבדל כבר אחרי שניים-שלושה שיעורים. שני כתבה לי שהרגישה שיפור ענק תוך שעה אחת 😊</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          באילו ימים אתה זמין?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><p>בדרך כלל ראשון, שלישי ושישי. אם אף אחד מהימים האלה לא מתאים — אפשר לדבר ולמצוא פתרון יחד.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          אונליין או פרונטלי — מה עדיף?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><p>שניהם עובדים מצוין ובאותו תעריף. פרונטלי בחדר הלימוד בלפיד — סביבה שקטה ונוחה ללא הסחות דעת. זום — נוח לתלמידים שמרוחקים יותר או מעדיפים מהבית.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          האם אתה מלמד גם תלמידים עם פערים גדולים?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><p>בהחלט. אני לא שופט ולא מניח כלום — מתחילים מאיפה שאתה נמצא, ומתקדמים משם. כל תלמיד מקבל תוכנית שמתאימה לו בדיוק.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-tag">צור קשר</div>
+    <h2 class="section-title">בואו נתחיל</h2>
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <p>השאירו פרטים ואחזור אליכם תוך 24 שעות. השיעור הראשון עולה ₪80 — שעה שלמה, בלי התחייבות.</p>
+        <div class="contact-detail">👤 <div><strong>אסף גרון</strong></div></div>
+        <div class="contact-detail">📞 <div><strong>054-307-3674</strong><span style="color:var(--text-muted)"> — ניתן גם בוואטסאפ</span></div></div>
+        <div class="contact-detail">📧 <div><strong>assafg4@gmail.com</strong></div></div>
+        <div class="contact-detail">📍 <div><strong>חדר לימוד בלפיד</strong><span style="color:var(--text-muted)"> — אזור מודיעין, או מקוון</span></div></div>
+        <div class="contact-detail">🗓️ <div><strong>זמינות:</strong><span style="color:var(--text-muted)"> ראשון, שלישי ושישי</span></div></div>
+      </div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group"><label>שם מלא</label><input type="text" placeholder="שם התלמיד / ההורה"></div>
+          <div class="form-group"><label>טלפון</label><input type="tel" placeholder="05X-XXX-XXXX"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>כיתה ורמה</label>
+            <select>
+              <option value="">בחר...</option>
+              <option>כיתה ט׳ — א1</option>
+              <option>כיתה ט׳ — א2</option>
+              <option>4 יחידות לימוד</option>
+              <option>5 יחידות לימוד</option>
+            </select>
+          </div>
+          <div class="form-group"><label>אופן השיעור</label>
+            <select>
+              <option value="">בחר...</option>
+              <option>פרונטלי — לפיד</option>
+              <option>מקוון — זום</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>הודעה (אופציונלי)</label><textarea placeholder="ספרו לי קצת על הצרכים..."></textarea></div>
+        <button class="btn-primary" style="width:100%" onclick="handleSubmit(this)">שלח ← אחזור אליך בקרוב</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 אסף גרון | מורה פרטי למתמטיקה · לפיד, אזור מודיעין · 054-307-3674</p>
+</footer>
+
+<a href="https://wa.me/972543073674" class="whatsapp-float" title="שלח ווצאפ">💬</a>
+
+<script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+  function handleSubmit(btn) {
+    btn.textContent = 'נשלח! 🎉 אחזור אליך בקרוב';
+    btn.style.background = 'linear-gradient(135deg,#2ecc71,#27ae60)';
+    btn.disabled = true;
+  }
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.id; });
+    document.querySelectorAll('.nav-links a').forEach(a => { a.style.color = a.getAttribute('href') === '#'+cur ? 'var(--gold)' : ''; });
+  });
+  document.addEventListener('click', e => { if (!e.target.closest('nav')) closeMenu(); });
+</script>
+</body>
+</html>
